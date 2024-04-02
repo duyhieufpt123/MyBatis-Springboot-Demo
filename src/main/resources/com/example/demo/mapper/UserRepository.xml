@@ -1,0 +1,60 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="your.package.path.UserMapper">
+
+    <!-- ResultMap for User entity -->
+    <resultMap id="UserResultMap" type="your.package.path.model.User">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="address" property="address" />
+        <result column="date_of_birth" property="dateOfBirth" />
+        <result column="user_role" property="userRole" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- SQL to find a user by email -->
+    <select id="findUserByEmail" resultMap="UserResultMap">
+        SELECT * FROM users WHERE email = #{email}
+    </select>
+
+    <!-- SQL to find a user by username -->
+    <select id="findUserByUserName" resultMap="UserResultMap">
+        SELECT * FROM users WHERE user_name = #{userName}
+    </select>
+
+    <!-- SQL to get all users -->
+    <select id="findAllUsers" resultMap="UserResultMap">
+        SELECT * FROM users
+    </select>
+
+    <!-- SQL to insert a new user -->
+    <insert id="insertUser">
+        INSERT INTO users (id, user_name, name, password, email, phone, address, date_of_birth, user_role, status)
+        VALUES (#{id}, #{userName}, #{name}, #{password}, #{email}, #{phone}, #{address}, #{dateOfBirth}, #{userRole}, #{status})
+    </insert>
+
+    <!-- SQL to update a user -->
+    <update id="updateUser">
+        UPDATE users
+        SET user_name = #{userName}, name = #{name}, password = #{password}, email = #{email},
+            phone = #{phone}, address = #{address}, date_of_birth = #{dateOfBirth}, user_role = #{userRole}, status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <!-- SQL to delete a user -->
+    <delete id="deleteUserById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+        <update id="updateResetToken">
+        UPDATE users SET reset_token = #{resetToken} WHERE email = #{email}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE users SET password = #{password} WHERE email = #{email}
+    </update>
+
+</mapper>

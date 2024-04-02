@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.classyapp.backendapi.repository.StudentRepository">
+
+    <resultMap id="StudentResultMap" type="com.example.classyapp.backendapi.model.student.Student">
+        <id column="id" property="id" />
+        <result column="userName" property="userName" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="address" property="address" />
+        <result column="dateOfBirth" property="dateOfBirth" />
+        <result column="userRole" property="userRole" />
+        <result column="status" property="status" />
+        <result column="school" property="info.school" />
+        <result column="studyStatus" property="info.studyStatus" />
+    </resultMap>
+
+    <select id="findByName" resultMap="StudentResultMap">
+        SELECT * FROM students WHERE name = #{name}
+    </select>
+
+    <select id="findByEmail" resultMap="StudentResultMap">
+        SELECT * FROM students WHERE email = #{email}
+    </select>
+
+    <select id="findByStudyStatus" resultMap="StudentResultMap">
+        SELECT * FROM students WHERE study_status = #{studyStatus}
+    </select>
+    
+    <select id="findStudentsByName" resultMap="StudentResultMap">
+        SELECT * FROM students WHERE name LIKE CONCAT('%', #{name}, '%')
+    </select>
+
+    <select id="findStudentsByEmail" resultMap="StudentResultMap">
+        SELECT * FROM students WHERE email LIKE CONCAT('%', #{email}, '%')
+    </select>
+</mapper>
