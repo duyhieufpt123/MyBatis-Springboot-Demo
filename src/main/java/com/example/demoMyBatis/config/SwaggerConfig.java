@@ -12,3 +12,5 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(info = @Info(title = "Demo MyBatis API", version = "v1", description = "API documentation for Demo MyBatis Application"))
 public class SwaggerConfig {
 }
+
+

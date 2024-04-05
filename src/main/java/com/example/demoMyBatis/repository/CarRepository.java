@@ -14,7 +14,7 @@ public interface CarRepository {
 
     int insertCar(Car car);
 
-    int updateCar(Car id);
+    int updateCar(Car car);
 
     int deleteCarById(int id);
 
