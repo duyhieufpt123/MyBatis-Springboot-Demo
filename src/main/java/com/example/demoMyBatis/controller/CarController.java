@@ -23,8 +23,8 @@ public class CarController {
         return ResponseEntity.ok(carService.findCarByBrand(brandName));
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<?> findCarByName(@PathVariable("name") String name){
+    @GetMapping("/carName/{carName}")
+    public ResponseEntity<?> findCarByName(@PathVariable("carName") String name){
         return ResponseEntity.ok(carService.findCarByName(name));
     }
 

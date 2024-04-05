@@ -154,8 +154,8 @@ public class CarServiceImpl implements CarService {
             response.setData(null);
         } else {
             findCar.setCarName(car.getCarName());
-            findCar.setCarBrand(car.getCarBrand());
-            findCar.setCarType(car.getCarType());
+            findCar.setCarBrand(carBrand);
+            findCar.setCarType(carType);
             findCar.setCarYear(car.getCarYear());
 
             carRepository.updateCar(findCar);
