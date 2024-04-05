@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="defaultStatementTimeout" value="30"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+    </settings>
+    <typeAliases>
+        <typeAlias alias = "Car" type = "com.example.demoMyBatis.model.Car"/>
+        <typeAlias alias = "CarBrand" type = "com.example.demoMyBatis.model.CarBrand"/>
+        <typeAlias alias = "CarType" type = "com.example.demoMyBatis.model.CarType"/>
+
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+                <property name="username" value="root"/>
+                <property name="password" value="12345"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="db/mybatis/mappers/CarRepository.xml"/>
+        <mapper resource="db/mybatis/mappers/CarBrandRepository.xml"/>
+        <mapper resource="db/mybatis/mappers/CarTypeRepository.xml"/>
+    </mappers>
+</configuration>

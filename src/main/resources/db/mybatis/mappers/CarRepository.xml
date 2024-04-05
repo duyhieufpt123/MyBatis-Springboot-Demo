@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demoMyBatis.repository.CarRepository">
+
+    <resultMap id="carResultMap" type="com.example.demoMyBatis.model.Car">
+        <id column="id" property="id" />
+        <result column="car_name" property="carName" />
+        <result column="car_year" property="carYear" />
+        <association property="carType" javaType="com.example.demoMyBatis.model.CarType">
+            <id column="car_type_id" property="id" />
+            <result column="type" property="type" />
+            <result column="attributes" property="attributes" />
+        </association>
+        <association property="carBrand" javaType="com.example.demoMyBatis.model.CarBrand">
+            <id column="car_brand_id" property="id" />
+            <result column="brand_name" property="name" />
+        </association>
+    </resultMap>
+
+    <select id="findAllCar" resultMap="carResultMap">
+        SELECT
+        c.id,
+        c.car_name,
+        c.car_year,
+        ct.id AS car_type_id,
+        ct.type,
+        ct.attributes,
+        cb.id AS car_brand_id,
+        cb.name AS brand_name
+        FROM cars c
+        JOIN car_types ct ON c.car_type_id = ct.id
+        JOIN car_brands cb ON c.car_brand_id = cb.id
+    </select>
+
+    <select id="findCarById" parameterType="int" resultMap="carResultMap">
+        SELECT
+        c.id,
+        c.car_name,
+        c.car_year,
+        ct.id AS car_type_id,
+        ct.type,
+        ct.attributes,
+        cb.id AS car_brand_id,
+        cb.name AS brand_name
+        FROM cars c
+        JOIN car_types ct ON c.car_type_id = ct.id
+        JOIN car_brands cb ON c.car_brand_id = cb.id
+        WHERE c.id = #{id}
+    </select>
+
+
+    <select id="findCarByName" parameterType="string" resultMap="carResultMap">
+        SELECT
+        c.id,
+        c.car_name,
+        c.car_year,
+        ct.id AS car_type_id,
+        ct.type,
+        ct.attributes,
+        cb.id AS car_brand_id,
+        cb.name AS brand_name
+        FROM cars c
+        JOIN car_types ct ON c.car_type_id = ct.id
+        JOIN car_brands cb ON c.car_brand_id = cb.id
+        WHERE c.car_name = #{name}
+    </select>
+
+    <select id="findCarByBrand" parameterType="string" resultMap="carResultMap">
+        SELECT
+        c.id,
+        c.car_name,
+        c.car_year,
+        ct.id AS car_type_id,
+        ct.type,
+        ct.attributes,
+        cb.id AS car_brand_id,
+        cb.name AS brand_name
+        FROM cars c
+        JOIN car_types ct ON c.car_type_id = ct.id
+        JOIN car_brands cb ON c.car_brand_id = cb.id
+        WHERE cb.name = #{brandName}
+    </select>
+
+
+    <insert id="insertCar" parameterType="com.example.demoMyBatis.model.Car" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cars (car_name, car_type_id, car_brand_id, car_year)
+        VALUES (#{carName}, #{carType.id}, #{carBrand.id}, #{carYear})
+    </insert>
+
+
+
+    <update id="updateCar" parameterType="com.example.demoMyBatis.model.Car">
+        UPDATE cars
+        SET car_name = #{carName}, car_year = #{carYear}, car_type_id = #{carType.id}, car_brand_id = #{carBrand.id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteCarById" parameterType="int">
+        DELETE FROM cars WHERE id = #{id}
+    </delete>
+
+
+
+</mapper>
