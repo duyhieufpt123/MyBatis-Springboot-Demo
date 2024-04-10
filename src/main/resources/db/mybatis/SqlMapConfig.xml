@@ -11,11 +11,13 @@
         <setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
     </settings>
     <typeAliases>
-        <typeAlias alias = "Car" type = "com.example.demoMyBatis.model.Car"/>
-        <typeAlias alias = "CarBrand" type = "com.example.demoMyBatis.model.CarBrand"/>
-        <typeAlias alias = "CarType" type = "com.example.demoMyBatis.model.CarType"/>
-
+        <typeAlias alias = "Car" type = "com.example.demoMyBatis.entity.Car"/>
+        <typeAlias alias = "CarBrand" type = "com.example.demoMyBatis.entity.CarBrand"/>
+        <typeAlias alias = "CarType" type = "com.example.demoMyBatis.entity.CarType"/>
     </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="com.example.demoMyBatis.config.UUIDTypeConfig" javaType="java.util.UUID"/>
+    </typeHandlers>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -32,4 +34,6 @@
         <mapper resource="db/mybatis/mappers/CarBrandRepository.xml"/>
         <mapper resource="db/mybatis/mappers/CarTypeRepository.xml"/>
     </mappers>
+
+
 </configuration>

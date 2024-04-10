@@ -1,7 +1,8 @@
 package com.example.demoMyBatis.service.impl;
-
 import com.example.demoMyBatis.constant.RES_CODE;
-import com.example.demoMyBatis.model.CarBrand;
+import com.example.demoMyBatis.dto.request.CreateCarBrandRequest;
+import com.example.demoMyBatis.dto.request.UpdateCarBrandRequest;
+import com.example.demoMyBatis.entity.CarBrand;
 import com.example.demoMyBatis.repository.CarBrandRepository;
 import com.example.demoMyBatis.response.BaseResponse;
 import com.example.demoMyBatis.service.CarBrandService;
@@ -9,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CarBrandServiceImpl implements CarBrandService {
-
     @Autowired
     private CarBrandRepository carBrandRepository;
 
+    public CarBrandServiceImpl(CarBrandRepository carBrandRepository) {
+        this.carBrandRepository = carBrandRepository;
+    }
     @Override
     public BaseResponse<?> findAllCarBrands() {
         BaseResponse<List<CarBrand>> response = new BaseResponse<>();
@@ -31,9 +35,8 @@ public class CarBrandServiceImpl implements CarBrandService {
         }
         return response;
     }
-
     @Override
-    public BaseResponse<?> findCarBrandById(int id) {
+    public BaseResponse<?> findCarBrandById(String id) {
         BaseResponse<CarBrand> response = new BaseResponse<>();
         CarBrand carBrand = carBrandRepository.findCarBrandById(id);
         if (carBrand == null){
@@ -47,19 +50,20 @@ public class CarBrandServiceImpl implements CarBrandService {
         }
         return response;
     }
-
     @Override
-    public BaseResponse<?> insertCarBrand(CarBrand carBrand) {
+    public BaseResponse<?> insertCarBrand(CreateCarBrandRequest request) {
         BaseResponse<CarBrand> response = new BaseResponse<>();
-        CarBrand existCarBrand = carBrandRepository.findCarBrandByName(carBrand.getName());
+        CarBrand existCarBrand = carBrandRepository.findCarBrandByName(request.name());
         if (existCarBrand != null){
             response.setCode(RES_CODE.FAIL.getCode());
-            response.setMessage("Car Brand already exist with name: "+carBrand.getName());
+            response.setMessage("Car Brand already exist with name: "+request.name());
             response.setData(null);
-
             return response;
         }
         try {
+            CarBrand carBrand = new CarBrand();
+            carBrand.setId(UUID.randomUUID().toString());
+            carBrand.setName(request.name());
             carBrandRepository.insertCarBrand(carBrand);
             response.setCode(RES_CODE.SUCCESS.getCode());
             response.setMessage(RES_CODE.SUCCESS.getMessage());
@@ -70,29 +74,27 @@ public class CarBrandServiceImpl implements CarBrandService {
         }
         return response;
     }
-
     @Override
-    public BaseResponse<?> updateCarBrand(int id, CarBrand carBrand) {
+    public BaseResponse<?> updateCarBrand(String id, UpdateCarBrandRequest request) {
         BaseResponse<CarBrand> response = new BaseResponse<>();
         CarBrand findCarBrand = carBrandRepository.findCarBrandById(id);
         if(findCarBrand == null){
             response.setCode(RES_CODE.FAIL.getCode());
-            response.setMessage("Car not found");
+            response.setMessage("Car brand not found");
             response.setData(null);
         } else {
-            findCarBrand.setName(carBrand.getName());
-
-            carBrandRepository.updateCarBrand(carBrand);
-            response.setCode(RES_CODE.SUCCESS.getCode());
-            response.setMessage(RES_CODE.SUCCESS.getMessage());
-            response.setData(carBrand);
-
+            findCarBrand.setName(request.name());
+            int savedCarBrand = carBrandRepository.updateCarBrand(findCarBrand);
+            if(savedCarBrand > 0 ){
+                response.setCode(RES_CODE.SUCCESS.getCode());
+                response.setMessage(RES_CODE.SUCCESS.getMessage());
+                response.setData(findCarBrand);
+            }
         }
         return response;
     }
-
     @Override
-    public BaseResponse<?> deleteCarBrandById(int id) {
+    public BaseResponse<?> deleteCarBrandById(String id) {
         BaseResponse<CarBrand> response = new BaseResponse<>();
         CarBrand carBrand = carBrandRepository.findCarBrandById(id);
         if (carBrand == null){
@@ -106,8 +108,5 @@ public class CarBrandServiceImpl implements CarBrandService {
             response.setData(null);
         }
         return response;
-
     }
 }
-
-

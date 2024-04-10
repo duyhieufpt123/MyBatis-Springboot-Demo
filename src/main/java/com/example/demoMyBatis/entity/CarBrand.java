@@ -1,16 +1,17 @@
-package com.example.demoMyBatis.model;
-
+package com.example.demoMyBatis.entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarBrand {
-    private int id;
+    private String id;
     private String name;
     @JsonIgnore
     private int year;

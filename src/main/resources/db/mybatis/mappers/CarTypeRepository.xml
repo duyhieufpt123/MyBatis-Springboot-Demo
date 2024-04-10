@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demoMyBatis.repository.CarTypeRepository">
 
-    <resultMap id="CarTypeResultMap" type="com.example.demoMyBatis.model.CarType">
+    <resultMap id="CarTypeResultMap" type="com.example.demoMyBatis.entity.CarType">
         <id column="id" property="id" />
         <result column="type" property="type" />
     </resultMap>
@@ -11,7 +11,7 @@
         SELECT * FROM car_types
     </select>
 
-    <select id="findCarTypeById" parameterType="int" resultMap="CarTypeResultMap">
+    <select id="findCarTypeById" parameterType="string" resultMap="CarTypeResultMap">
         SELECT * FROM car_types WHERE id = #{id}
     </select>
 
@@ -19,17 +19,17 @@
         SELECT * FROM car_types WHERE type = #{type}
     </select>
 
-    <insert id="insertCarType" parameterType="com.example.demoMyBatis.model.CarType" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO car_types (type, attributes) VALUES (#{type}, #{attributes})
+    <insert id="insertCarType" parameterType="com.example.demoMyBatis.entity.CarType" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO car_types (id, type, attributes) VALUES (#{id} ,#{type}, #{attributes})
     </insert>
 
 
 
-    <update id="updateCarType" parameterType="com.example.demoMyBatis.model.CarType">
+    <update id="updateCarType" parameterType="com.example.demoMyBatis.entity.CarType">
         UPDATE car_types SET type = #{type} WHERE id = #{id}
     </update>
 
-    <delete id="deleteCarTypeById" parameterType="int">
+    <delete id="deleteCarTypeById" parameterType="string">
         DELETE FROM car_types WHERE id = #{id}
     </delete>
 

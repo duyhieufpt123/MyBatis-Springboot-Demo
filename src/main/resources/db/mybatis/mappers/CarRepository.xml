@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demoMyBatis.repository.CarRepository">
 
-    <resultMap id="carResultMap" type="com.example.demoMyBatis.model.Car">
+    <resultMap id="carResultMap" type="com.example.demoMyBatis.entity.Car">
         <id column="id" property="id" />
         <result column="car_name" property="carName" />
         <result column="car_year" property="carYear" />
-        <association property="carType" javaType="com.example.demoMyBatis.model.CarType">
+        <association property="carType" javaType="com.example.demoMyBatis.entity.CarType">
             <id column="car_type_id" property="id" />
             <result column="type" property="type" />
             <result column="attributes" property="attributes" />
         </association>
-        <association property="carBrand" javaType="com.example.demoMyBatis.model.CarBrand">
+        <association property="carBrand" javaType="com.example.demoMyBatis.entity.CarBrand">
             <id column="car_brand_id" property="id" />
             <result column="brand_name" property="name" />
         </association>
@@ -32,7 +32,7 @@
         JOIN car_brands cb ON c.car_brand_id = cb.id
     </select>
 
-    <select id="findCarById" parameterType="int" resultMap="carResultMap">
+    <select id="findCarById" parameterType="string" resultMap="carResultMap">
         SELECT
         c.id,
         c.car_name,
@@ -80,22 +80,41 @@
         JOIN car_brands cb ON c.car_brand_id = cb.id
         WHERE cb.name = #{brandName}
     </select>
-
-
-    <insert id="insertCar" parameterType="com.example.demoMyBatis.model.Car" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO cars (car_name, car_type_id, car_brand_id, car_year)
-        VALUES (#{carName}, #{carType.id}, #{carBrand.id}, #{carYear})
+    <insert id="insertCar" parameterType="com.example.demoMyBatis.entity.Car" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        cars (
+        id,
+        car_name,
+        car_type_id,
+        car_brand_id,
+        car_year)
+        VALUES (
+        #{id},
+        #{carName},
+        #{carType.id},
+        #{carBrand.id},
+        #{carYear})
     </insert>
-
-
-
-    <update id="updateCar" parameterType="com.example.demoMyBatis.model.Car">
+    <update id="updateCar" parameterType="com.example.demoMyBatis.entity.Car">
         UPDATE cars
-        SET car_name = #{carName}, car_year = #{carYear}, car_type_id = #{carType.id}, car_brand_id = #{carBrand.id}
+        SET
+        <trim prefixOverrides=",">
+            <if test="carName != null">
+                , car_name = #{carName}
+            </if>
+            <if test="carYear != null">
+                , car_year = #{carYear}
+            </if>
+            <if test="carType != null and carType.id != null">
+                , car_type_id = #{carType.id}
+            </if>
+            <if test="carBrand != null and carBrand.id != null">
+                , car_brand_id = #{carBrand.id}
+            </if>
+        </trim>
         WHERE id = #{id}
     </update>
-
-    <delete id="deleteCarById" parameterType="int">
+    <delete id="deleteCarById" parameterType="string">
         DELETE FROM cars WHERE id = #{id}
     </delete>
 

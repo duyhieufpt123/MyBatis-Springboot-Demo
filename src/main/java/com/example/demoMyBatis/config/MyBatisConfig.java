@@ -1,6 +1,4 @@
 package com.example.demoMyBatis.config;
-
-
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,12 +10,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-
 @Configuration
 @EnableTransactionManagement
 @MapperScan(value = "com.example.demoMyBatis.repository", sqlSessionFactoryRef = "sqlSessionFactory")
 public class MyBatisConfig {
-
     @Autowired
     private DataSource dataSource;
     @Bean
