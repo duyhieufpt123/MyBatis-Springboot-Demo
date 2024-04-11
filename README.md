@@ -25,4 +25,4 @@ FOREIGN KEY (car_brand_id) REFERENCES car_brands(id)
 );
 
 
-
+http://localhost:8080/api/v1/swagger-ui/index.html#
